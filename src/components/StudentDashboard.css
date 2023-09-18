@@ -1,0 +1,107 @@
+/* StudentDashboard.css */
+
+/* Styles for the entire dashboard */
+.student-dashboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Styling for student information */
+.student-info {
+  background-color: #f0f0f0;
+  margin-top: 200px;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Styling for timetable */
+.timetable {
+  width: 100%;
+}
+
+.timetable-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px solid black; /* Updated to black border */
+  margin-bottom: 20px;
+}
+
+.timetable-table th,
+.timetable-table td {
+  border: 1px solid black; /* Updated to black border */
+  padding: 8px;
+  text-align: center;
+}
+
+/* Styling for course list */
+.course-list {
+  width: 100%;
+}
+
+.course-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.course-list li {
+  margin-bottom: 10px;
+}
+
+.course-list li::before {
+  content: "•"; /* Added bullet points before each course */
+  color: black;
+  margin-right: 10px;
+}
+
+.course-link {
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.course-link:hover {
+  color: #851b96;
+}
+
+/* Styling for buttons */
+.enquiry-button {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.enquiry-btn,
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.enquiry-btn:hover,
+button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+/* Styling for Logout button */
+button#logout-btn {
+  background-color: black;
+}
+
+button#logout-btn:hover {
+  background-color: #333; /* Darken the color on hover */
+}
+
+button:active {
+  transform: scale(0.95);
+}

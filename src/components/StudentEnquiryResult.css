@@ -1,0 +1,51 @@
+/* StudentEnquiryResult.css */
+
+/* Style for the entire component */
+.student-enquiry-result {
+  text-align: center;
+  padding: 20px;
+}
+
+/* Style for the table */
+.student-enquiry-result table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px solid black; /* Table border lines are black */
+  margin-top: 20px;
+}
+
+/* Style for table headers */
+.student-enquiry-result th {
+  background-color: #007bff;
+  color: white;
+  border: 1px solid black; /* Header borders are black */
+  padding: 8px;
+}
+
+/* Style for table cells */
+.student-enquiry-result td {
+  border: 1px solid black; /* Cell borders are black */
+  padding: 8px;
+}
+
+/* Style for table rows with rejected status (yellow) */
+.student-enquiry-result tr.status-rejected {
+  background-color: yellow;
+}
+
+/* Style for table rows with pending status (white) */
+.student-enquiry-result tr.status-pending {
+  background-color: white;
+}
+
+/* Style for the "Go Back" button (dark blue) */
+.student-enquiry-result button {
+  background-color: #000080; /* Dark blue */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+

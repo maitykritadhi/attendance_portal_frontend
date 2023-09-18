@@ -1,0 +1,65 @@
+/* UViewStudents.css */
+
+.student-list-container {
+  margin: 20px;
+}
+
+.student-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.student-list-item {
+  margin-bottom: 10px;
+}
+
+/* .student-details {
+  font-weight: bold;
+} */
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+}
+
+.button-container {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.back-button {
+  margin-top: 20px;
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-button {
+  margin-top: 20px;
+  background-color: #3a1cbe;
+  color: rgb(243, 240, 240);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  
+}
+
+.update-button {
+  margin-top: 20px;
+  background-color: #229567;
+  color: rgb(246, 245, 250);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 25px;
+}

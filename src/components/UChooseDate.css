@@ -1,0 +1,29 @@
+/* UChooseDate.css */
+
+.choose-date-container {
+  margin: 20px;
+}
+
+.choose-date-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.react-datepicker-wrapper {
+  display: inline-block;
+}
+
+.react-datepicker__input-container input {
+  font-size: 18px;
+  padding: 8px 12px;
+}
+
+.submit-button {
+  font-size: 18px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}

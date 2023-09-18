@@ -1,0 +1,62 @@
+/* SignUp.css */
+
+/* Style for the entire component */
+.signup-form {
+  text-align: center;
+  padding: 20px;
+}
+
+/* Style for form labels and inputs */
+.signup-form label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.signup-form input[type="text"],
+.signup-form input[type="email"],
+.signup-form input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Style for the "User Type" section container */
+.user-type-container {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  margin-bottom: 10px;
+}
+
+/* Style for radio buttons and labels */
+.signup-form input[type="radio"] {
+  margin-right: 5px;
+}
+
+/* Style for the "Sign Up" button (blue) */
+.signup-form button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+/* Style for the "Go to Login" button (purple) */
+.signup-form button[type="button"] {
+  background-color: #800080;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Add some space between the buttons along the x-direction */
+.signup-form button + button {
+  margin-left: 10px;
+}

@@ -1,0 +1,42 @@
+/* StudentEnquiry.css */
+
+/* Styles for the entire component */
+.student-enquiry {
+  text-align: center;
+  padding: 20px;
+}
+
+/* Styling for select and textarea */
+.student-enquiry select,
+.student-enquiry textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Styling for buttons */
+.student-enquiry button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.student-enquiry .send-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.student-enquiry .check-btn {
+  background-color: #800080;
+  color: white;
+}
+
+.student-enquiry .back-btn {
+  background-color: #008000;
+  color: white;
+}

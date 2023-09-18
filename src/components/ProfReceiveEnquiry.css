@@ -1,0 +1,43 @@
+/* Style for the table */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 2px solid black;
+}
+
+th, td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2; /* Gray background for table header */
+}
+
+/* Style for Accept and Reject buttons */
+button {
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.accept-button {
+  background-color: green;
+  color: white;
+}
+
+.reject-button {
+  background-color: blue;
+  color: white;
+}
+
+/* Style for the Go Back button */
+.go-back-button {
+  margin-top: 10px;
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}

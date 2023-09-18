@@ -1,0 +1,63 @@
+/* DisplayStudents.css */
+
+.student-list-container {
+  margin: 20px;
+}
+
+.student-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.student-list-item {
+  margin-bottom: 10px;
+}
+
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+}
+
+.button-container {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.back-button {
+  margin-top: 20px;
+   margin-right: 10px; /* Add right margin for spacing */
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.goback-button {
+  margin-top: 20px;
+  margin-right: 50px; /* Add right margin for spacing */
+  background-color: #7a7979;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-button {
+  margin-top: 20px;
+  margin-right: 50px; /* Add right margin for spacing */
+  background-color: #3625b0;
+  color: rgb(246, 245, 250);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
