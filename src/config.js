@@ -1,6 +1,6 @@
 const BASEURL_DEV = `http://localhost:3000/`;
-const BASEURL_PROD = ``;
-const ENV = `DEV`;
+const BASEURL_PROD = `https://attendance-portal-backend-lypv.onrender.com/`;
+const ENV = `PROD`;
 
 module.exports = {
   BASEURL_DEV,

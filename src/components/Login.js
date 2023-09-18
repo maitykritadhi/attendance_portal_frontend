@@ -19,6 +19,7 @@ const Login = (props) => {
   } else {
     baseUrl = baseUrlProd;
   }
+  console.log(baseUrl);
 
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [userType, setUserType] = useState();
