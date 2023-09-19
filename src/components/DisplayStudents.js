@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { Navigate } from "react-router-dom";
-
+import Loader from "./Loader"; // Import the Loader component
 import "./DisplayStudents.css"; // Import the CSS file
 
 import { BASEURL_DEV, BASEURL_PROD, ENV } from "../config";
@@ -18,7 +18,10 @@ const DisplayStudents = () => {
     baseUrl = baseUrlProd;
   }
 
-  const { courseId } = useParams();
+  const [isFetching, setIsFetching] = useState(true); // State to track student list fetching
+  const [isSubmitting, setIsSubmitting] = useState(false); // State to track attendance submission
+
+  const { courseId, courseName } = useParams();
   const [students, setStudents] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
   const sessionToken = localStorage.getItem("token");
@@ -28,6 +31,7 @@ const DisplayStudents = () => {
   useEffect(() => {
     async function fetchStudents() {
       try {
+        setIsFetching(true); // Start fetching, show the loader
         const response = await axios.get(`${baseUrl}api/prof/getStudentList`, {
           headers: {
             authorization: sessionToken,
@@ -39,6 +43,8 @@ const DisplayStudents = () => {
       } catch (error) {
         // alert("Already marked attendance");
         console.error("Error fetching student list:", error);
+      } finally {
+        setIsFetching(false); // Stop fetching, hide the loader
       }
     }
 
@@ -53,33 +59,9 @@ const DisplayStudents = () => {
     }
   };
 
-  //   const handleSubmitAttendance = async () => {
-  //     try {
-  //       const attendList = selectedStudents.map((studentId) =>
-  //         selectedStudents.includes(studentId) ? "P" : "A"
-  //       );
-
-  //       const response = await axios.post(
-  //         "http://localhost:3000/api/prof/markAttendance",
-  //         {
-  //           stud_id: selectedStudents,
-  //           attend_list: attendList,
-  //         },
-  //         {
-  //           headers: {
-  //             authorization: sessionToken,
-  //             courseid: courseId,
-  //           },
-  //         }
-  //       );
-
-  //       console.log("Attendance marked successfully:", response.data);
-  //       // You can perform any necessary actions after marking attendance, such as reloading data or displaying a success message.
-  //     } catch (error) {
-  //       console.error("Error marking attendance:", error);
-  //     }
-  //   };
   const handleSubmitAttendance = async () => {
+    setIsSubmitting(true); // Start submitting, show the loader
+
     const studIdList = students.map((student) => student.id);
     const attendList = students.map((student) =>
       selectedStudents.includes(student.id) ? "P" : "A"
@@ -90,11 +72,6 @@ const DisplayStudents = () => {
       attend_list: attendList,
     };
     try {
-      // const attendanceData = students.map((student) => ({
-      //   stud_id: student.id,
-      //   attend_list: selectedStudents.includes(student.id) ? "P" : "A",
-      // }));
-      // console.log(attendanceData);
       const response = await axios.post(
         `${baseUrl}api/prof/markAttendance`,
         attendanceData,
@@ -112,6 +89,8 @@ const DisplayStudents = () => {
     } catch (error) {
       alert("Already marked attendance. Please go to Update attendance!!!!");
       console.error("Error marking attendance:", error);
+    } finally {
+      setIsSubmitting(false); // Stop submitting, hide the loader
     }
   };
 
@@ -126,26 +105,34 @@ const DisplayStudents = () => {
 
   return (
     <div>
-      <h2>Mark Attendance for Course ID : {courseId}</h2>
-      <ul>
-        {students.map((student) => (
-          <li key={student.id}>
-            <label>
-              <input
-                type="checkbox"
-                checked={selectedStudents.includes(student.id)}
-                onChange={() => handleCheckboxChange(student.id)}
-              />
-              Student ID: <span className="bold">{student.id}</span>, Student
-              Name: <span className="bold">{student.name}</span>, Student Roll:{" "}
-              <span className="bold">{student.roll}</span>
-            </label>
-          </li>
-        ))}
-      </ul>
-      <button className="submit-button" onClick={handleSubmitAttendance}>
-        Submit Attendance
-      </button>
+      <h2>Mark Attendance for Course ID : {courseName}</h2>
+      {isFetching ? (
+        <Loader /> // Show the loader while fetching students
+      ) : (
+        <ul>
+          {students.map((student) => (
+            <li key={student.id}>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={selectedStudents.includes(student.id)}
+                  onChange={() => handleCheckboxChange(student.id)}
+                />
+                Student ID: <span className="bold">{student.id}</span>, Student
+                Name: <span className="bold">{student.name}</span>, Student
+                Roll: <span className="bold">{student.roll}</span>
+              </label>
+            </li>
+          ))}
+        </ul>
+      )}
+      {isSubmitting ? (
+        <Loader /> // Show the loader while submitting attendance
+      ) : (
+        <button className="submit-button" onClick={handleSubmitAttendance}>
+          Submit Attendance
+        </button>
+      )}
       <button className="go-back-button" onClick={handleGoBack}>
         Go Back
       </button>

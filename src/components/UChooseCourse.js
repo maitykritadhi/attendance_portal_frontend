@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { Navigate } from "react-router-dom";
-
+import Loader from "./Loader"; // Import the Loader component
 import "./UChooseCourse.css"; // Import the CSS file
 import { BASEURL_DEV, BASEURL_PROD, ENV } from "../config";
 
@@ -22,12 +22,15 @@ const UChooseCourse = () => {
   const typeofuser = localStorage.getItem("userType");
   const [courses, setCourses] = useState([]);
   const selectedDayId = localStorage.getItem("selectedDayId1"); // Retrieve dayid from localStorage
+  const [isFetching, setIsFetching] = useState(true); // State to track data fetching
+
   console.log(selectedDayId);
 
   useEffect(() => {
     async function fetchCourseList() {
       try {
         console.log("Fetching courses for dayid:", selectedDayId);
+        setIsFetching(true); // Start fetching, show the loader
         const response = await axios.get(`${baseUrl}api/prof/chooseCourse`, {
           headers: {
             authorization: sessionToken,
@@ -39,6 +42,8 @@ const UChooseCourse = () => {
         setCourses(response.data);
       } catch (error) {
         console.error("Error fetching course list:", error);
+      } finally {
+        setIsFetching(false); // Stop fetching, hide the loader
       }
     }
 
@@ -64,17 +69,21 @@ const UChooseCourse = () => {
     <>
       <div className="course-list-container">
         <h2>Choose a Course for Updation of Attendance </h2>
-        <ul>
-          {courses.map((course) => (
-            <li key={course.id}>
-              Course ID: {course.id}, Course Name: {course.cname}
-              {"   =>  "}
-              <Link to={`/uchoosedate/uchoosecourse/${course.id}`}>
-                View Students
-              </Link>
-            </li>
-          ))}
-        </ul>
+        {isFetching ? (
+          <Loader /> // Show the loader while fetching
+        ) : (
+          <ul>
+            {courses.map((course) => (
+              <li key={course.id}>
+                Course ID: {course.id}, Course Name: {course.cname}
+                {"   =>  "}
+                <Link to={`/uchoosedate/uchoosecourse/${course.id}`}>
+                  View Students
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
       <button className="back-button" onClick={handleGoBackToHomePage}>
         Go Back To Home Page

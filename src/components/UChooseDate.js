@@ -76,14 +76,7 @@ const UChooseDate = () => {
     // navigate("/");
     return <Navigate to="/login/studentinfo" replace />;
   }
-
-  // return (
-  //   <div>
-  //     <h2>Choose Date</h2>
-  //     <DatePicker selected={selectedDate} onChange={handleDateChange} />
-  //     <button onClick={handleUpdateDate}>Submit Date</button>
-  //   </div>
-  // );
+  
   return (
     <div className="choose-date-container">
       <h2 className="choose-date-title">Choose Date</h2>

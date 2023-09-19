@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { Navigate } from "react-router-dom";
-
+import Loader from "./Loader"; // Import the Loader component
 import "./StudentList.css"; // Import the CSS file
 import { BASEURL_DEV, BASEURL_PROD, ENV } from "../config";
 
@@ -17,6 +17,9 @@ const StudentList = () => {
     baseUrl = baseUrlProd;
   }
 
+  const [isFetching, setIsFetching] = useState(true); // State to track data fetching
+  const [isEnrolling, setIsEnrolling] = useState(false); // State to track enrolling
+
   const { courseId, courseName } = useParams();
   const [students, setStudents] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
@@ -27,6 +30,7 @@ const StudentList = () => {
   useEffect(() => {
     async function fetchStudents() {
       try {
+        setIsFetching(true); // Start fetching, show the loader
         console.log(courseId);
         const response = await axios.get(`${baseUrl}api/prof/getStudents`, {
           headers: {
@@ -37,6 +41,8 @@ const StudentList = () => {
         setStudents(response.data);
       } catch (error) {
         console.error("Error fetching student list:", error);
+      } finally {
+        setIsFetching(false); // Stop fetching, hide the loader
       }
     }
 
@@ -54,6 +60,7 @@ const StudentList = () => {
 
   const handleSubmit = async () => {
     try {
+      setIsEnrolling(true); // Start enrolling, show the loader
       const response = await axios.post(
         `${baseUrl}api/prof/assignStudents`,
         {
@@ -70,6 +77,8 @@ const StudentList = () => {
       window.location.reload();
     } catch (error) {
       console.error("Error enrolling students:", error);
+    } finally {
+      setIsEnrolling(false); // Stop enrolling, hide the loader
     }
   };
 
@@ -90,27 +99,37 @@ const StudentList = () => {
     <div className="student-list-container">
       <h2>Students Not Enrolled in Course ID : {courseName}</h2>
       <div className="student-list">
-        <ul>
-          {students.map((student) => (
-            <li key={student.id}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={selectedStudents.includes(student.id)}
-                  onChange={() => handleCheckboxChange(student.id)}
-                />
-                Student ID: <span className="bold">{student.id}</span>, Student
-                Name: <span className="bold">{student.name}</span>, Student
-                Roll: <span className="bold">{student.roll}</span>
-              </label>
-            </li>
-          ))}
-        </ul>
+        {/* Conditional rendering for the loader while fetching */}
+        {isFetching ? (
+          <Loader />
+        ) : (
+          <ul>
+            {students.map((student) => (
+              <li key={student.id}>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={selectedStudents.includes(student.id)}
+                    onChange={() => handleCheckboxChange(student.id)}
+                  />
+                  Student ID: <span className="bold">{student.id}</span>,
+                  Student Name: <span className="bold">{student.name}</span>,
+                  Student Roll: <span className="bold">{student.roll}</span>
+                </label>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
       <div className="button-container">
-        <button className="enroll-button" onClick={handleSubmit}>
-          Enroll Selected Students
-        </button>
+        {/* Conditional rendering for the loader while enrolling */}
+        {isEnrolling ? (
+          <Loader />
+        ) : (
+          <button className="enroll-button" onClick={handleSubmit}>
+            Enroll Selected Students
+          </button>
+        )}
         <button className="goback-button" onClick={handleGoBack}>
           Go Back
         </button>

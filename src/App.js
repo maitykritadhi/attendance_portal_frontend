@@ -39,7 +39,7 @@ function App() {
             <Route path="/chooseday" element={<ChooseDay />} />
             <Route path="/chooseday/choosecourse" element={<ChooseCourse />} />
             <Route
-              path="/chooseday/choosecourse/:courseId"
+              path="/chooseday/choosecourse/:courseId/:courseName"
               element={<DisplayStudents />}
             />
             <Route path="/uchoosedate" element={<UChooseDate />} />

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Navigate } from "react-router-dom";
-
+import Loader from "./Loader"; // Import the Loader component
 import { BASEURL_DEV, BASEURL_PROD, ENV } from "../config";
 
 
@@ -17,6 +17,8 @@ const ChooseCourse = () => {
     baseUrl = baseUrlProd;
   }
 
+  const [isFetching, setIsFetching] = useState(true); // State to track data fetching
+
   const location = useLocation();
   const navigate = useNavigate();
   const sessionToken = localStorage.getItem("token");
@@ -27,19 +29,19 @@ const ChooseCourse = () => {
   useEffect(() => {
     async function fetchCourseList() {
       try {
-        const response = await axios.get(
-          `${baseUrl}api/prof/chooseCourse`,
-          {
-            headers: {
-              authorization: sessionToken,
-              dayid: selectedDayId,
-            },
-          }
-        );
+        setIsFetching(true); // Start fetching, show the loader
+        const response = await axios.get(`${baseUrl}api/prof/chooseCourse`, {
+          headers: {
+            authorization: sessionToken,
+            dayid: selectedDayId,
+          },
+        });
 
         setCourses(response.data);
       } catch (error) {
         console.error("Error fetching course list:", error);
+      } finally {
+        setIsFetching(false); // Stop fetching, hide the loader
       }
     }
 
@@ -61,20 +63,24 @@ const ChooseCourse = () => {
     <>
       <div className="course-list-container">
         <h2>Choose a Course</h2>
-        <ul>
-          {courses.map((course) => (
-            <li key={course.id} className="course-list-item">
-              Course ID: {course.id}, Course Name: {course.cname}
-              {"   =>  "}
-              <Link
-                to={`/chooseday/choosecourse/${course.id}`}
-                className="course-link"
-              >
-                View Students
-              </Link>
-            </li>
-          ))}
-        </ul>
+        {isFetching ? (
+          <Loader /> // Show the loader while fetching
+        ) : (
+          <ul>
+            {courses.map((course) => (
+              <li key={course.id} className="course-list-item">
+                Course ID: {course.id}, Course Name: {course.cname}
+                {"   =>  "}
+                <Link
+                  to={`/chooseday/choosecourse/${course.id}/${course.cname}`}
+                  className="course-link"
+                >
+                  View Students
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
       <button className="back-button" onClick={handleGoBackToHomePage}>
         Go Back To Home Page

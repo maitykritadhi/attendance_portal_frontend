@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
+import Loader from "./Loader"; // Import the Loader component
 import "./StudentDashboard.css";
 
 import { BASEURL_DEV, BASEURL_PROD, ENV } from "../config";
@@ -31,6 +31,7 @@ const StudentDashboard = () => {
 
   const [studentData, setStudentData] = useState(null);
   const [rows, setRows] = useState(null);
+  const [isFetching, setIsFetching] = useState(true); // State to track data fetching
   const sessionToken = localStorage.getItem("token");
   const typeofuser = localStorage.getItem("userType");
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ const StudentDashboard = () => {
   useEffect(() => {
     const fetchStudentInfo = async () => {
       try {
+        setIsFetching(true); // Start fetching, show the loader
         const response = await axios.get(
           `${baseUrl}api/students/getStudentInfo`,
           {
@@ -48,8 +50,7 @@ const StudentDashboard = () => {
         );
         console.log(response.data);
         setStudentData(response.data);
-        
-        // Calculate the maximum number of courses on any day
+
         const maxCoursesPerDay = Math.max(
           ...daysOfWeek.map(
             (_, colIndex) =>
@@ -86,34 +87,30 @@ const StudentDashboard = () => {
         setRows(extra);
       } catch (error) {
         console.error("Error fetching student information:", error);
+      } finally {
+        setIsFetching(false); // Stop fetching, hide the loader
       }
     };
 
     fetchStudentInfo();
-    
   }, [sessionToken, baseUrl]);
 
   if (sessionToken && typeofuser === "professor") {
-    // navigate("/");
     return <Navigate to="/" replace />;
   }
 
   const handleLogout = () => {
-    // Logic for logout (e.g., clearing token or state)
-    // Redirect to the login page
     localStorage.removeItem("token");
     localStorage.removeItem("userType");
     localStorage.clear();
-    navigate("/login"); // Adjust the route as needed
-  }
-
-  //////////////////////////////
-
-  //  ////////////////////////
+    navigate("/login");
+  };
 
   return (
     <div className="student-dashboard">
-      {studentData && (
+      {isFetching ? (
+        <Loader /> // Show the loader while fetching
+      ) : studentData ? (
         <>
           <div className="student-info">
             <h2>Student Information</h2>
@@ -121,79 +118,6 @@ const StudentDashboard = () => {
             <h3>Roll: {studentData.roll}</h3>
             <h3>Email: {studentData.mail}</h3>
           </div>
-
-          {/* <div className="timetable">
-            <h2>Timetable</h2>
-            <table className="timetable-table">
-              <thead>
-                <tr>
-                  {daysOfWeek.map((day, dayId) => (
-                    <th key={dayId}>{day}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {studentData.timetable.map((entry, rowIndex) => (
-                  <tr key={rowIndex}>
-                    {daysOfWeek.map((_, colIndex) => (
-                      <td key={colIndex}>
-                        {entry.dayid === colIndex
-                          ? studentData.courses.map((course) =>
-                              course.id === entry.cid ? (
-                                <span className="course-cell" key={course.id}>
-                                  {course.cid}
-                                </span>
-                              ) : (
-                                ""
-                              )
-                            )
-                          : ""}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div> */}
-
-          {/* <div className="timetable">
-            <h2>Timetable</h2>
-            <table className="timetable-table">
-              <thead>
-                <tr>
-                  {daysOfWeek.map((day, dayId) => (
-                    <th key={dayId}>{day}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {Array.from({
-                  length:
-                    Math.max(
-                      ...studentData.timetable.map((entry) => entry.dayid)
-                    ) + 1,
-                }).map((_, rowIndex) => (
-                  <tr key={rowIndex}>
-                    {daysOfWeek.map((_, colIndex) => (
-                      <td key={colIndex}>
-                        {studentData.timetable
-                          .filter((entry) => entry.dayid === colIndex)
-                          .map((entry) =>
-                            studentData.courses
-                              .filter((course) => course.id === entry.cid)
-                              .map((course) => (
-                                <span className="course-cell" key={course.id}>
-                                  {course.cid}
-                                </span>
-                              ))
-                          )}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div> */}
 
           <div className="timetable">
             <h2>Timetable</h2>
@@ -229,7 +153,7 @@ const StudentDashboard = () => {
             </ul>
           </div>
         </>
-      )}
+      ) : null}
       <div className="enquiry-button">
         <button
           className="enquiry-btn"

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { Navigate } from "react-router-dom";
+import Loader from "./Loader"; // Import the Loader component
 
 import "./UViewStudents.css";
 import { BASEURL_DEV, BASEURL_PROD, ENV } from "../config";
@@ -25,6 +26,8 @@ const UViewStudents = () => {
   const [students, setStudents] = useState([]);
   const [updatedAttendance, setUpdatedAttendance] = useState([]);
   const [showSubmitButton, setShowSubmitButton] = useState(false);
+  const [isFetching, setIsFetching] = useState(true); // State to track data fetching
+  const [isSubmitting, setIsSubmitting] = useState(false); // State to track submission
 
   // Retrieve formattedDate from local storage
   const formattedDate = localStorage.getItem("formattedDate") || "";
@@ -32,6 +35,7 @@ const UViewStudents = () => {
   useEffect(() => {
     async function fetchStudentList() {
       try {
+        setIsFetching(true); // Start fetching, show the loader
         const response = await axios.get(
           `${baseUrl}api/prof/getStudentListUpdation`,
           {
@@ -46,6 +50,8 @@ const UViewStudents = () => {
         setStudents(response.data);
       } catch (error) {
         console.error("Error fetching student list:", error);
+      } finally {
+        setIsFetching(false); // Stop fetching, hide the loader
       }
     }
 
@@ -80,6 +86,7 @@ const UViewStudents = () => {
 
   const handleSubmit = async () => {
     try {
+      setIsSubmitting(true); // Start submitting, show the loader
       const response = await axios.put(
         `${baseUrl}api/prof/updatesAttendance`,
         updatedAttendance,
@@ -103,6 +110,8 @@ const UViewStudents = () => {
       navigate("/");
     } catch (error) {
       console.error("Error updating attendance:", error);
+    } finally {
+      setIsSubmitting(false); // Stop submitting, hide the loader
     }
   };
 
@@ -118,30 +127,35 @@ const UViewStudents = () => {
   return (
     <div>
       <h2>View Students for Attendance Updation</h2>
-      <ul>
-        {students.map((student) => (
-          <li key={student.id}>
-            <label>
-              <input
-                type="checkbox"
-                checked={student.attendance === "P"}
-                onChange={() => handleCheckboxChange(student.id)}
-              />
-              Student ID: <span className="bold">{student.id}</span>, Student
-              Name: <span className="bold">{student.name}</span>, Student Roll:{" "}
-              <span className="bold">{student.roll}</span>
-            </label>
-          </li>
-        ))}
-      </ul>
+      {isFetching ? (
+        <Loader /> // Show the loader while fetching
+      ) : (
+        <ul>
+          {students.map((student) => (
+            <li key={student.id}>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={student.attendance === "P"}
+                  onChange={() => handleCheckboxChange(student.id)}
+                />
+                Student ID: <span className="bold">{student.id}</span>, Student
+                Name: <span className="bold">{student.name}</span>, Student
+                Roll: <span className="bold">{student.roll}</span>
+              </label>
+            </li>
+          ))}
+        </ul>
+      )}
       <button className="update-button" onClick={handleUpdateAttendance}>
         Update Attendance
       </button>
-      {showSubmitButton && (
+      {showSubmitButton && !isSubmitting && (
         <button className="submit-button" onClick={handleSubmit}>
           Submit Updated Attendance
         </button>
       )}
+      {isSubmitting && <Loader />} {/* Show loader during submission */}
       <button className="go-back-button" onClick={handleGoBack}>
         Go Back
       </button>
