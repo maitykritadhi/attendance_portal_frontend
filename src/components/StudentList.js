@@ -74,7 +74,7 @@ const StudentList = () => {
         }
       );
       console.log("Enrollment successful:", response.data);
-      window.location.reload();
+      navigate("/courses");
     } catch (error) {
       console.error("Error enrolling students:", error);
     } finally {
